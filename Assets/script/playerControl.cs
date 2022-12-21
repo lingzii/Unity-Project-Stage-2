@@ -35,10 +35,7 @@ public class playerControl : MonoBehaviour
             force = 1;
         }
 
-        // 向量轉移
-        // move = Vector3.RotateTowards(transform.forward, move, speed * Time.deltaTime, 0f);
-        // move = Quaternion.LookRotation(move);
-
+        move *= rb.rotation * speed * Time.deltaTime;
         rb.MovePosition(rb.position + move);
     }
 
