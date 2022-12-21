@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CombatCam : MonoBehaviour
 {
-    [Header("References")]
     public Transform player;
     public Transform playerObj;
     public Transform orientation;
@@ -13,13 +12,7 @@ public class CombatCam : MonoBehaviour
     public Rigidbody rb;
     public float rotationSpeed;
 
-    private void Start()
-    {
-        // Cursor.lockState = CursorLockMode.Locked;
-        // Cursor.visible = false;
-    }
-
-    private void Update()
+    void Update()
     {
         Vector3 viewDir =
             player.position

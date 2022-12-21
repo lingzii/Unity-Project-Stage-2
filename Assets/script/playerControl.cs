@@ -5,11 +5,12 @@ using TMPro;
 
 public class playerControl : MonoBehaviour
 {
-    public float jumpHeight = 5f;
-    public float speed = 5f;
-    private int count = 0;
-
     public TextMeshProUGUI countText;
+    public float jumpHeight = 5f;
+    public float maxSpeed = 10f;
+    public float speed = 1f;
+    public int count = 0;
+
     private Rigidbody rb;
     private Vector3 move;
     private float force = 1f;
@@ -21,6 +22,9 @@ public class playerControl : MonoBehaviour
 
     void Update()
     {
+        Vector3 localForward = transform.TransformDirection(Vector3.forward);
+        Vector3 localRight = transform.TransformDirection(Vector3.right);
+
         move.x = Input.GetAxis("Horizontal");
         move.z = Input.GetAxis("Vertical");
         move.Normalize();
@@ -29,14 +33,17 @@ public class playerControl : MonoBehaviour
         {
             force += force < 2 ? Time.deltaTime : 0;
         }
-        if (Input.GetKeyUp(KeyCode.Space)) // && Mathf.Abs(rb.velocity.y) < 0.1f
+        if (Input.GetKeyUp(KeyCode.Space))
         {
             rb.velocity = new Vector3(0f, force * jumpHeight, 0f);
             force = 1;
         }
 
-        move *= rb.rotation * speed * Time.deltaTime;
-        rb.MovePosition(rb.position + move);
+        if (rb.velocity.magnitude < maxSpeed)
+        {
+            rb.AddForce(move.z * speed * localForward);
+            rb.AddForce(move.x * speed * localRight);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
